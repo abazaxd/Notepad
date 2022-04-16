@@ -1,5 +1,7 @@
 package com.example.notepad.domain
 
+import androidx.lifecycle.LiveData
+
 interface PagesRepository {
 
     fun addPage(page: Page)
@@ -10,7 +12,7 @@ interface PagesRepository {
 
     fun getPage(idPage: Int): Page
 
-    fun getPageList(): List<Page>
+    fun getPageList(): LiveData<List<Page>>
 
 
 }
