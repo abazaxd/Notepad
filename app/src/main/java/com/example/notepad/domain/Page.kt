@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-class Page(
+data class Page(
 
     var text: String,
     var id : Int = DEFAULT_ID
