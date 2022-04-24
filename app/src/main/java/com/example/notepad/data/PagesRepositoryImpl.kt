@@ -16,7 +16,7 @@ object PagesRepositoryImpl: PagesRepository {
     private var autoId = 0
 
     init {
-        for (i in 0 until 10){
+        for (i in 0 until 30){
             val item = Page("hello")
             addPage(item)
         }
