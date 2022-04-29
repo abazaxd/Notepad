@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notepad.R
@@ -13,10 +12,7 @@ import com.example.notepad.domain.Page
 
 class PageListAdapter : ListAdapter<Page, PageListAdapter.pageViewHolder>(PageDiffCallback()) {
 
-    var count = 0
-
     var onPageLongClickListener: ((Page) -> Unit)? = null
-
     var onPageClickListener : ((Page) -> Unit)? = null
 
     class pageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -36,9 +32,6 @@ class PageListAdapter : ListAdapter<Page, PageListAdapter.pageViewHolder>(PageDi
     }
 
     override fun onBindViewHolder(holder: pageViewHolder, position: Int) {
-
-        count++
-        Log.d("onBind", "$count")
 
         val page = getItem(position)
 
