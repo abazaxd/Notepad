@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         pageListAdapter = PageListAdapter()
         rvPageList.adapter = pageListAdapter
 
-        setupLongClickListener()
-
         setupClickListener()
 
         setupSwipeListener(rvPageList)
@@ -67,12 +65,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListener() {
         pageListAdapter.onPageClickListener = {
             Log.d("MSG", "${it.toString()}")
-        }
-    }
-
-    private fun setupLongClickListener() {
-        pageListAdapter.onPageLongClickListener = {
-            TODO()
         }
     }
 }
