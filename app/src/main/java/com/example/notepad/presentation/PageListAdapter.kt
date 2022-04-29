@@ -6,25 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notepad.R
 import com.example.notepad.domain.Page
 
-class PageListAdapter : RecyclerView.Adapter<PageListAdapter.pageViewHolder>() {
+class PageListAdapter : ListAdapter<Page, PageListAdapter.pageViewHolder>(PageDiffCallback()) {
 
     var count = 0
 
     var onPageLongClickListener: ((Page) -> Unit)? = null
 
     var onPageClickListener : ((Page) -> Unit)? = null
-
-    var pageList = listOf<Page>()
-        set(value) {
-            val callback = PageListDiffCallback(pageList, value)
-            val diffResult  = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
 
     class pageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -47,16 +40,17 @@ class PageListAdapter : RecyclerView.Adapter<PageListAdapter.pageViewHolder>() {
         count++
         Log.d("onBind", "$count")
 
-        val page = pageList[position]
+        val page = getItem(position)
+
         holder.itemView.setOnClickListener {
             onPageClickListener?.invoke(page)
         }
 
+        holder.itemView.setOnLongClickListener {
+            onPageLongClickListener?.invoke(page)
+            true
+        }
+
         holder.tvPage.text = page.text
-    }
-
-    override fun getItemCount(): Int {
-
-        return pageList.size
     }
 }

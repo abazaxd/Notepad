@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.pageList.observe(this) {
-            pageListAdapter.pageList = it
+            pageListAdapter.submitList(it)
         }
 
     }
@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         rvPageList.adapter = pageListAdapter
 
         setupClickListener()
+
+        setupOnLongClickListener()
 
         setupSwipeListener(rvPageList)
     }
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val page = pageListAdapter.pageList[viewHolder.adapterPosition]
+                val page = pageListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deletePage(page)
             }
         }
@@ -65,6 +67,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListener() {
         pageListAdapter.onPageClickListener = {
             Log.d("MSG", "${it.toString()}")
+        }
+    }
+
+    private fun setupOnLongClickListener() {
+        pageListAdapter.onPageLongClickListener = {
+            Log.d("long", "${it.toString()}")
         }
     }
 }

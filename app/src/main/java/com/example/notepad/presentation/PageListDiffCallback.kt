@@ -7,6 +7,7 @@ class PageListDiffCallback (
     private val oldList: List<Page>,
     private val newList: List<Page>
 ): DiffUtil.Callback() {
+
     override fun getOldListSize(): Int {
         return oldList.size
     }
