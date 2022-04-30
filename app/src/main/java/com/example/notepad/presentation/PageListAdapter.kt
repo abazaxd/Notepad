@@ -10,27 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notepad.R
 import com.example.notepad.domain.Page
 
-class PageListAdapter : ListAdapter<Page, PageListAdapter.pageViewHolder>(PageDiffCallback()) {
+class PageListAdapter : ListAdapter<Page, PageViewHolder>(PageDiffCallback()) {
 
     var onPageLongClickListener: ((Page) -> Unit)? = null
     var onPageClickListener : ((Page) -> Unit)? = null
 
-    class pageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val tvPage = view.findViewById<TextView>(R.id.tvPage)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): pageViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PageViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.page,
             parent,
             false
         )
-        return pageViewHolder(view)
+        return PageViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: pageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PageViewHolder, position: Int) {
 
         val page = getItem(position)
 
