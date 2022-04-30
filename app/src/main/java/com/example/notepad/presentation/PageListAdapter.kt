@@ -22,7 +22,6 @@ class PageListAdapter : ListAdapter<Page, PageListAdapter.pageViewHolder>(PageDi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): pageViewHolder {
 
-
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.page,
             parent,
