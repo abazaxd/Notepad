@@ -17,8 +17,8 @@ object PagesRepositoryImpl: PagesRepository {
 
     init {
         for (i in 0 until 30){
-            val item = Page("hello")
-            addPage(item)
+            val page = Page("hello")
+            addPage(page)
         }
     }
 
