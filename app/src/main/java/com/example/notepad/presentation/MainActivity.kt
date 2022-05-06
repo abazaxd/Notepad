@@ -1,15 +1,13 @@
 package com.example.notepad.presentation
 
-import android.media.MediaRouter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.notepad.R
-import com.example.notepad.domain.Page
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +25,11 @@ class MainActivity : AppCompatActivity() {
             pageListAdapter.submitList(it)
         }
 
+        val buttonAddPage = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        buttonAddPage.setOnClickListener {
+            val intent = PageActivity.newIntentAddPage(this)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -67,6 +70,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListener() {
         pageListAdapter.onPageClickListener = {
             Log.d("MSG", "${it.toString()}")
+            val intent = PageActivity.newIntentEditPage(this, it.id)
+            startActivity(intent)
         }
     }
 
