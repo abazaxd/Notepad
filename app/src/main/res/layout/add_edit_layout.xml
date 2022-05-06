@@ -8,28 +8,34 @@
 
     <Button
         android:id="@+id/btSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.926" />
 
     <EditText
         android:id="@+id/etText"
-        android:layout_width="339dp"
-        android:layout_height="359dp"
-        android:layout_marginBottom="184dp"
+        android:layout_width="334dp"
+        android:layout_height="283dp"
+        android:layout_marginTop="16dp"
         android:autofillHints=""
         android:backgroundTint="@android:color/transparent"
         android:ems="10"
-        android:gravity="top|left"
+        android:gravity="start|end"
+        android:hint="Введите текст"
         android:inputType="text"
-        android:text="name"
-        app:layout_constraintBottom_toTopOf="@+id/btSave"
+        android:textColorHint="#757575"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
