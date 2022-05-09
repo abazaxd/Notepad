@@ -20,5 +20,6 @@
         android:layout_height="match_parent"
         android:padding="8dp"
         android:text="d21sd1d12ed12dwsd1w1s111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        android:textAlignment="viewStart"
         android:textSize="20sp" />
 </androidx.cardview.widget.CardView>
