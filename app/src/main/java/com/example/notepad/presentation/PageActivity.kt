@@ -14,11 +14,6 @@ import com.example.notepad.domain.Page
 
 class PageActivity : AppCompatActivity() {
 
-//    private lateinit var viewModel: PageViewModel
-//
-//    private lateinit var etText: EditText
-//    private lateinit var btSave: Button
-//
     private var screenMode = MODE_UNKNOWN
     private var pageId = Page.DEFAULT_ID
 
@@ -26,33 +21,11 @@ class PageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_edit_layout)
         parseIntent()
-//        viewModel = ViewModelProvider(this)[PageViewModel::class.java]
-//        initViews()
-        launchRightMode()
-//
-//        viewModel.finishActivity.observe(this){
-//            finish()
-//        }
-//
-//    }
-//
-//    private fun launchEditMode(){
-//        viewModel.getPage(pageId)
-//        viewModel.page.observe(this) {
-//            etText.setText(it.text)
-//        }
-//        btSave.setOnClickListener {
-//            viewModel.editPage(etText.text?.toString())
-//        }
-//    }
-//
-//    private fun launchADDMode() {
-//        btSave.setOnClickListener {
-//            viewModel.addPage(etText.text?.toString())
-//        }
-//    }
-//
+        if (savedInstanceState == null) {
+            launchRightMode()
+        }
     }
+
     private fun parseIntent(){
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)){
             throw RuntimeException("Param screen mode is absent.")
@@ -77,14 +50,9 @@ class PageActivity : AppCompatActivity() {
             else -> throw RuntimeException("Unknown screen mode.")
         }
         supportFragmentManager.beginTransaction()
-            .add(R.id.pageContainer, fragment)
+            .replace(R.id.pageContainer, fragment)
             .commit()
     }
-//
-//    private fun initViews(){
-//
-//        etText = findViewById(R.id.etText)
-//        btSave = findViewById(R.id.btSave)
 
     companion object {
 

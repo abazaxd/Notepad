@@ -3,6 +3,8 @@ package com.example.notepad.presentation
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +17,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var pageListAdapter: PageListAdapter
 
+    private var pageContainer: FragmentContainerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        pageContainer = findViewById(R.id.page_container)
         setupRecyclerView()
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.pageList.observe(this) {
@@ -27,9 +31,25 @@ class MainActivity : AppCompatActivity() {
 
         val buttonAddPage = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         buttonAddPage.setOnClickListener {
-            val intent = PageActivity.newIntentAddPage(this)
-            startActivity(intent)
+            if (isOnePaneOn()) {
+                val intent = PageActivity.newIntentAddPage(this)
+                startActivity(intent)
+            } else {
+                launchFragment(PageFragment.newInstanceAddItem())
+            }
         }
+    }
+
+    private fun isOnePaneOn(): Boolean {
+        return pageContainer == null
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.page_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun setupRecyclerView() {
@@ -69,17 +89,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         pageListAdapter.onPageClickListener = {
-            Log.d("MSG", "${it.toString()}")
-            val intent = PageActivity.newIntentEditPage(this, it.id)
-            startActivity(intent)
+            if (isOnePaneOn()) {
+                val intent = PageActivity.newIntentEditPage(this, it.id)
+                startActivity(intent)
+            } else {
+                launchFragment(PageFragment.newInstanceEditItem(it.id))
+            }
+        }
+    }
+        private fun setupOnLongClickListener() {
+            pageListAdapter.onPageLongClickListener = {
+                Log.d("long", "${it.toString()}")
+            }
         }
     }
 
-    private fun setupOnLongClickListener() {
-        pageListAdapter.onPageLongClickListener = {
-            Log.d("long", "${it.toString()}")
-        }
-    }
-}
+
 
 
