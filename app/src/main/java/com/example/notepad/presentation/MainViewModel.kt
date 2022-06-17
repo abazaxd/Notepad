@@ -1,17 +1,20 @@
 package com.example.notepad.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.notepad.data.PagesRepositoryImpl
 import com.example.notepad.domain.AddPageUseCase
 import com.example.notepad.domain.DeletePageUseCase
 import com.example.notepad.domain.GetPageListUseCase
 import com.example.notepad.domain.Page
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
+class MainViewModel(application: Application): AndroidViewModel(application) {
 
-    val repository = PagesRepositoryImpl
+    val repository = PagesRepositoryImpl(application)
 
     private val getPageListUseCase = GetPageListUseCase(repository)
     private val deletePageUseCase = DeletePageUseCase(repository)
@@ -19,8 +22,8 @@ class MainViewModel: ViewModel() {
     val pageList = getPageListUseCase.getPageList()
 
     fun deletePage(page: Page){
-
-        deletePageUseCase.deletePage(page)
+        viewModelScope.launch {
+            deletePageUseCase.deletePage(page)
+        }
     }
-
 }
