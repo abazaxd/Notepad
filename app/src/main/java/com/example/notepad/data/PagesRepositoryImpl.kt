@@ -1,59 +1,42 @@
 package com.example.notepad.data
 
 
+import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.notepad.domain.Page
 import com.example.notepad.domain.Page.Companion.DEFAULT_ID
 import com.example.notepad.domain.PagesRepository
 import java.lang.RuntimeException
 
-object PagesRepositoryImpl: PagesRepository {
+class PagesRepositoryImpl(application: Application) : PagesRepository {
 
-    private val pageListLiveData = MutableLiveData<List<Page>>()
-    private val pageList = sortedSetOf(Comparator<Page> { p0, p1 -> p0.id.compareTo(p1.id) })
+    private val pageDao = AppDataBase.getInstance(application).pageDao()
+    private val mapper = Mapper()
 
-    private var autoId = 0
-
-    init {
-        for (i in 0 until 30){
-            val page = Page("hello")
-            addPage(page)
-        }
+    override suspend fun addPage(page: Page) {
+        pageDao.addPage(mapper.mapEntityToDbModel(page))
     }
 
-    override fun addPage(page: Page) {
-
-        if (page.id == DEFAULT_ID) {
-            page.id = autoId
-            autoId++
-            pageList.add(page)
-        }
-        pageList.add(page)
-        updateList()
+    override suspend fun deletePage(page: Page) {
+        pageDao.deletePage(page.id)
     }
 
-    override fun deletePage(page: Page) {
-        pageList.remove(page)
-        updateList()
+    override suspend fun editPage(page: Page) {
+        pageDao.addPage(mapper.mapEntityToDbModel(page))
     }
 
-    override fun editPage(page: Page) {
-        val oldElement = getPage(page.id)
-        pageList.remove(oldElement)
-        addPage(page)
-    }
-
-    override fun getPage(idPage: Int): Page {
-        return pageList.find { it.id == idPage
-        } ?: throw RuntimeException("Page with id: $idPage not found.")
+    override suspend fun getPage(idPage: Int): Page {
+        val dbModel = pageDao.getPage(idPage)
+        return mapper.mapDbModelToEntity(dbModel)
     }
 
     override fun getPageList(): LiveData<List<Page>> {
-        return pageListLiveData
-    }
-
-    private fun updateList(){
-        pageListLiveData.value = pageList.toList()
+        return MediatorLiveData<List<Page>>().apply {
+            addSource(pageDao.getPageList()) {
+                value = mapper.mapListDbModelToListEntity(it)
+            }
+        }
     }
 }
